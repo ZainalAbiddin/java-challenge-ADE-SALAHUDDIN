@@ -30,7 +30,7 @@ public class SecurityConfig {
 
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/sign-up/**", "/swagger-ui/**", "/v3/api-docs").permitAll()
+                .antMatchers("/login/**", "/registration","/").permitAll()
                 .anyRequest().authenticated();
         return http.build();
 

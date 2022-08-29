@@ -1,36 +1,47 @@
 package ist.challange.adeSalahuddin.controller;
 
-import ist.challange.adeSalahuddin.entity.Users;
-import ist.challange.adeSalahuddin.repository.UserRepository;
+import ist.challange.adeSalahuddin.entity.DTO.RegistrationDTO;
+import ist.challange.adeSalahuddin.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
 public class userController {
 
-    private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @GetMapping("/")
-    List<Users> getUsers(){
-        return userRepository.findAll();
+    public String Homepage() {
+        return "Java Challange - Ade Salahuddin";
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity<Object> registrationUser(@RequestBody RegistrationDTO registrationDTO) throws Exception {
+        return userService.registrationUsers(registrationDTO);
     }
 
     @PostMapping("/login")
-    public Users authenticateUser(@Valid @RequestBody Users users) throws Exception {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return userRepository.findByUsername(users.getUsername()).orElseThrow(()->new Exception("User not found"));
+    public ResponseEntity<Object> authenticateUser(@Valid @RequestBody RegistrationDTO registrationDTO) throws Exception {
+        return userService.loginUsers(registrationDTO);
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<Object> getUsers() throws Exception {
+        return userService.findAllUsers();
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable long id) throws Exception {
+        return userService.findById(id);
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<Object> editUsers(@PathVariable long id, @RequestBody RegistrationDTO registrationDTO) throws Exception {
+        return userService.editUser(registrationDTO, id);
+    }
+
 }

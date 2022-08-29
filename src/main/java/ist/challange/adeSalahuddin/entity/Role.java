@@ -1,11 +1,7 @@
 package ist.challange.adeSalahuddin.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
-
 import javax.persistence.*;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +17,4 @@ public class Role{
 
     @Column(length = 25,nullable = false)
     private String name;
-
 }
